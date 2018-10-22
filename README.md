@@ -19,6 +19,17 @@ Vstarcam C24S-Plus FullHD 1080P Wide Angle Camera | https://www.vstarcam.com.sg/
 
 -----------------------------------
 
+### Getting started:
+
+```python
+>>> import yatwin.scripts
+>>> cameras = yatwin.scripts.hack_cameras()
+>>> cameras
+[]
+```
+
+-----------------------------------
+
 ### Python libraries that were of great help:
 
 Name | Link
