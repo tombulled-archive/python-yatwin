@@ -30,6 +30,9 @@ class HttpResponse(object):
         Returns a bs4.BeautifulSoup of self.Response.text
         """
 
+        if self.failed():
+            return
+
         soup = bs4.BeautifulSoup(self.Response.text, 'html.parser')
 
         return soup
@@ -42,6 +45,9 @@ class HttpResponse(object):
             Dictionary: {key: val}
         """
 
+        if self.failed():
+            return
+
         js_dict = utils.jstopy(self.Response.text)
 
         return js_dict
@@ -51,12 +57,18 @@ class HttpResponse(object):
         Returns self.Response.text
         """
 
+        if self.failed():
+            return
+
         return self.Response.text
 
     def parse_bytes(self):
         """
         Returns self.Response.content
         """
+
+        if self.failed():
+            return
 
         return self.Response.content
 

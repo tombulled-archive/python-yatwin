@@ -76,7 +76,14 @@ def hack_telnet_auth(http):
         clear = True,
     )
 
-    encoder = http.get(FILE_ENCODER).parse_bytes()
+    encoder_resp = http.get(FILE_ENCODER)
+
+    if encoder_resp is None:
+        logger.debug('Failed to download encoder')
+
+        return
+
+    encoder = encoder_resp.parse_bytes()
 
     regex_search = re.search(REGEX_PASSWORD, encoder)
 
