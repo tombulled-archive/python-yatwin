@@ -281,6 +281,8 @@ class Telnet(object):
         Returns the decoded resp as a stripped string
         """
 
+        resp = resp.replace(b'\r\r\n', b'') # Long data wraps over multiple lines
+
         if comm_line is not None:
             lstrip_data = comm_line
 
