@@ -1,7 +1,5 @@
 # python-yatwin - `***unfinished***`
 
------------------------------------
-
 ## Python 3 API for Vstarcam and YATWIN IP Cameras (Windows)
 
 -----------------------------------
@@ -23,9 +21,35 @@ Vstarcam C24S-Plus FullHD 1080P Wide Angle Camera | https://www.vstarcam.com.sg/
 
 ```python
 >>> import yatwin.scripts
->>> cameras = yatwin.scripts.hack_cameras()
->>> cameras
-[]
+>>> cams = yatwin.scripts.hack_cameras()
+>>> cams
+[<BaseHackedYatwin
+(
+	http:      <Http(admin:888888@192.168.1.223:80)>
+	icmp:      <Icmp(192.168.1.223)>
+	onvif:     <Onvif(admin:888888@192.168.1.223:10080)>
+	telnet:    <Telnet(vstarcam2017:20170912@192.168.1.223:23)>
+	ftp:       None
+	multicast: <Multicast()>
+	imap:      None
+	rtsp:      <Rtsp(admin:888888@192.168.1.223:10554)[udp/av1_0]>
+)>]
+>>> cam = cams[0]
+>>> cam.telnet
+<Telnet(vstarcam2017:20170912@192.168.1.223:23)>
+>>> print(cam.telnet.ls())
+bin            init           mknod_console  root           tmp
+boot           lib            mnt            sbin           usr
+dev            linuxrc        nfsroot        share          var
+etc            lost+found     opt            sys
+home           mkimg.rootfs   proc           system
+>>> from pprint import pprint
+>>> pprint(cam.http.get_rtsp())
+{<SystemParam(rtspport)>: 10554,
+ <SystemParam(rtsppwd)>: '888888',
+ <SystemParam(rtspuser)>: 'admin',
+ <SystemParam(rtsp_auth_enable)>: 1}
+>>> 
 ```
 
 -----------------------------------
