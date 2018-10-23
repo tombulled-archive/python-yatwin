@@ -19,6 +19,8 @@ Vstarcam C24S-Plus FullHD 1080P Wide Angle Camera | https://www.vstarcam.com.sg/
 
 ```python
 >>> import yatwin.scripts
+>>>
+>>> # Scan network and hack any cameras it finds
 >>> cams = yatwin.scripts.hack_cameras()
 >>> cams
 [<BaseHackedYatwin
@@ -32,7 +34,11 @@ Vstarcam C24S-Plus FullHD 1080P Wide Angle Camera | https://www.vstarcam.com.sg/
 	imap:      None
 	rtsp:      <Rtsp(admin:888888@192.168.1.223:10554)[udp/av1_0]>
 )>]
+>>>
+>>> # Pick the first camera
 >>> cam = cams[0]
+>>> 
+>>> # Access the cameras Telnet interface
 >>> cam.telnet
 <Telnet(vstarcam2017:20170912@192.168.1.223:23)>
 >>> print(cam.telnet.ls())
@@ -41,7 +47,10 @@ boot           lib            mnt            sbin           usr
 dev            linuxrc        nfsroot        share          var
 etc            lost+found     opt            sys
 home           mkimg.rootfs   proc           system
+>>>
 >>> from pprint import pprint
+>>>
+>>> # Get the cameras RTSP parameters using HTTP
 >>> pprint(cam.http.get_rtsp())
 {<SystemParam(rtspport)>: 10554,
  <SystemParam(rtsppwd)>: '888888',
