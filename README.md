@@ -64,3 +64,11 @@ Software | Link
 Sonic Visualiser | https://sonicvisualiser.org/
 Audacity | https://www.audacityteam.org/
 Google Chrome | https://www.google.com/chrome/
+PuTTY | https://putty.org/
+FileZilla | https://filezilla-project.org/
+Atom | https://atom.io/
+Python | https://www.python.org/
+
+-----------------------------------
+
+Total cameras harmed in the making of this code: **1**
