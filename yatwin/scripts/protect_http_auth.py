@@ -8,6 +8,8 @@ Imports:
 
 Contains:
     hack_http_auth
+
+May soon be deprecated/improved
 """
 
 logger = logging.getLogger(__name__)

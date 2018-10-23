@@ -75,7 +75,7 @@ def find_cameras(attempts=10, max_interest=1, filter=_filter):
             url_disected = disect_url(url)
 
             host = url_disected['IP']
-            port = url_disected['Port']
+            port = int(url_disected['Port'])
             endpoint = url_disected['Endpoint']
 
             exists = any(camera_device['Host'] == host for camera_device in camera_devices)

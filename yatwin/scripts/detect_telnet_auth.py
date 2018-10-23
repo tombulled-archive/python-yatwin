@@ -14,6 +14,8 @@ Imports:
 
 Contains:
     detect_telnet_auth
+
+This may soon be deprecated
 """
 
 logger = logging.getLogger(__name__)
