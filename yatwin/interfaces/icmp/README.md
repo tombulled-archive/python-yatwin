@@ -1,1 +1,1 @@
-test
+# python-yatwin: /yatwin/interfaces/icmp/
