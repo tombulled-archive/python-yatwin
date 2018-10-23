@@ -24,8 +24,9 @@ logger.info(f'Library imported: {__name__}')
 def hack_cameras(aim=1):
     """
     Wrapper for ..scripts.find_cameras(max_interest=aim)
-    Which then hacks the cameras interfaces
-    Returning them as a <BaseHackedYatwin> instance
+    ... which then hacks the cameras interfaces
+
+    Returns cameras as <BaseHackedYatwin> instances
     """
 
     raw_cameras = scripts.find_cameras(max_interest=aim)
@@ -46,8 +47,6 @@ def hack_cameras(aim=1):
 
     return cameras
 
-#@decorators.debug_call(logger)
-#@decorators.debug_resp(logger)
 @decorators.debug()
 def hack_camera(host, onvif_port=interfaces.onvif.constants.DEFAULT_PORT):
     """
