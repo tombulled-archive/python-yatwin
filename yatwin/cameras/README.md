@@ -1,1 +1,1 @@
-# python-yatwin: /yatwin/cameras
+# python-yatwin: /yatwin/cameras/
