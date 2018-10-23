@@ -1,1 +1,1 @@
-# python-yatwin: /yatwin/interfaces
+# python-yatwin: /yatwin/interfaces/
