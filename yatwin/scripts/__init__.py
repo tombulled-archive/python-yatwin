@@ -12,7 +12,8 @@ Imports:
     .xss_inject.xss_inject
     .command_inject.command_inject
     .start_ftp_server.start_ftp_server
-    .hack_telnet_auth
+    .hack_telnet_auth.hack_telnet_auth
+    .bypass_firewall_telnet.bypass_firewall_telnet
 """
 
 from .find_devices import find_devices
@@ -27,3 +28,4 @@ from .xss_inject import xss_inject
 from .command_inject import command_inject
 from .start_ftp_server import start_ftp_server
 from .hack_telnet_auth import hack_telnet_auth
+from .bypass_firewall_telnet import bypass_firewall_telnet
