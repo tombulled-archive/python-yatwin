@@ -30,6 +30,7 @@ class Telnet(object):
                 *args,
                 username = constants.DEFAULT_USERNAME,
                 password = constants.DEFAULT_PASSWORD,
+                port = constants.DEFAULT_PORT,
                 **kwargs
             ):
         """
@@ -46,7 +47,7 @@ class Telnet(object):
         kwargs.update({'timeout': constants.TIMEOUT_GENERAL})
 
         try:
-            self.Telnet = telnetlib.Telnet(host, *args, **kwargs)
+            self.Telnet = telnetlib.Telnet(host, *args, port=port, **kwargs)
         except (TimeoutError, socket.timeout) as error_timeout:
             raise errors.TimeoutError \
             (
@@ -70,7 +71,7 @@ class Telnet(object):
         self.username = username
         self.password = password
         self.host = host
-        self.port = constants.DEFAULT_PORT # For now
+        self.port = port
 
         self._initialise()
 
