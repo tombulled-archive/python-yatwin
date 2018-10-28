@@ -4,7 +4,7 @@ Library containing utility functions for 'yatwin'
 Imports:
     .disect_url.disect_url
     .scan_port.scan_port
-    .chunks.chunk
+    .chunk.chunk
 """
 
 from .disect_url import disect_url
