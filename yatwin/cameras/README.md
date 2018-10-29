@@ -102,4 +102,5 @@ ZeroDivisionError: division by zero
 >>> http = some_service_creator(HOST, username = USERNAME, password = PASSWORD, port = PORT)
 >>> http
 <Http(admin:888888@192.168.1.227:80)>
+>>>
 ```
