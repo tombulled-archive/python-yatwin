@@ -52,7 +52,7 @@ class EmailFile(object):
         """
         Wrapper for self.Message.get_payload
 
-        Returns the contents of the email (the message)
+        Returns the contents of the file (the raw file contents)
         """
 
         return self.Message.get_payload()
@@ -130,7 +130,7 @@ class Email(object):
 
         header_subject = headers.get('Subject', '')
 
-        return f'<{self.__class__.__name__}({header_subject})'
+        return f'<{self.__class__.__name__}({header_subject})>'
 
     def get_raw(self):
         """
