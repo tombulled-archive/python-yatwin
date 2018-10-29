@@ -1,5 +1,28 @@
 # python-yatwin: /yatwin/utils/
 
+## Contents:
+* [chunk](#example-chunk)
+* [disect_url](#example-disect_url)
+* [get_external_ip](#example-get_external_ip)
+* [scan_port](#example-scan_port)
+
+### Example: chunk
+```python
+>>> from yatwin.utils import chunk
+>>> from pprint import pprint
+>>> 
+>>> # Create a list
+>>> some_list = list(range(10))
+>>> some_list
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>>
+>>> # Chunk the list into blocks of 2
+>>> chunked = chunk(some_list, 2)
+>>> list(chunked)
+[[0, 1], [2, 3], [4, 5], [6, 7], [8, 9]]
+>>> 
+```
+
 ### Example: disect_url
 ```python
 >>> from yatwin.utils import disect_url
@@ -36,6 +59,18 @@
  'Protocol': 'http',
  'Raw URL': 'http://admin:888888@192.168.1.227:80/index.htm?loginuse=admin&loginpas=888888',
  'Username': 'admin'}
+>>> 
+```
+
+### Example: get_external_ip
+```python
+>>> from yatwin import utils
+>>> 
+>>> # Get your LAN's external (public) IP address
+>>> # Note: This requires an internet connection
+>>> external_ip = utils.get_external_ip()
+>>> external_ip
+'86.184.83.27'
 >>> 
 ```
 
