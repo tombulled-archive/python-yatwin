@@ -75,7 +75,9 @@ class Icmp(object):
 
         pinged = wincmdping.ping(dst, raw=True)
 
-        return pinged
+        pinged_pretty = pinged.replace('\r', '').strip()
+
+        return pinged_pretty
 
     def _init_attrs(self):
         """
