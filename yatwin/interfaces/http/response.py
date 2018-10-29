@@ -25,6 +25,14 @@ class HttpResponse(object):
 
         self.Response = requests_resp
 
+    def __repr__(self):
+        """
+        Returns a string representation of the object
+        ... in the form <class_name(url)>
+        """
+
+        return f'<{self.__class__.__name__}({self.Response.url})>'
+
     def parse_html(self):
         """
         Returns a bs4.BeautifulSoup of self.Response.text
