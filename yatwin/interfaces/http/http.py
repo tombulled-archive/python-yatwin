@@ -89,7 +89,7 @@ class Http(object):
         Shorthand wrapper for self.get
         """
 
-        return self.call(*args, **kwargs)
+        return self.get(*args, **kwargs)
 
     def get(self, endpoint, *args, **kwargs):
         """
