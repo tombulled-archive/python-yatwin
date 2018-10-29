@@ -9,6 +9,10 @@ Imports:
     ftplib
     typing
     .constants
+
+Contains:
+    keep_alive
+    callback_store
 """
 
 def keep_alive(func: Callable) -> Callable:
@@ -47,6 +51,11 @@ def keep_alive(func: Callable) -> Callable:
 
             resp_conn = cls.FTP.connect(cls.host, cls.port, timeout=constants.TIMEOUT)
             resp_login = cls.login(cls.username, cls.password)
+
+            return func(cls, *args, **kwargs)
+        except ConnectionAbortedError as error_connection_aborted: # An established connection was aborted by the software in your host machine
+            resp_conn = cls.FTP.connect()
+            resp_login = cls.login()
 
             return func(cls, *args, **kwargs)
 
