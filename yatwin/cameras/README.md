@@ -1,6 +1,9 @@
 # python-yatwin: /yatwin/cameras/
 
-### Example: BaseCamera
+## Contents:
+* [BaseCamera.BaseCamera](#Example-BaseCamera.BaseCamera)
+
+### Example: BaseCamera.BaseCamera
 
 ```python
 >>> from yatwin.cameras import BaseCamera
@@ -24,7 +27,7 @@
 >>> 
 ```
 
-### Example: BaseHackedYatwin
+### Example: BaseHackedYatwin.BaseHackedYatwin
 
 ```python
 >>> from yatwin.cameras import BaseHackedYatwin
@@ -55,4 +58,45 @@
 >>> print(cam.telnet.execute('echo "Telnet was auto-hacked"')
 Telnet was auto-hacked
 >>> 
+```
+
+### Example: decorators.try_except
+```python
+>>> from yatwin.cameras import decorators
+>>> 
+>>> # Create a decorated function
+>>> @decorators.try_except('Some value')
+def some_func(param = 1):
+	return param / 0 # This will raise ZeroDivisionError('division by zero')
+
+>>> some_func()
+'Some value'
+>>>
+>>> # Prove it would have raised an exception
+>>> 1 / 0
+Traceback (most recent call last):
+  File "<pyshell#7>", line 1, in <module>
+    1 / 0
+ZeroDivisionError: division by zero
+>>> 
+```
+
+### Example: utils.create_service
+```python
+>>> from yatwin.interfaces import Http
+>>> from yatwin.cameras import utils
+>>> 
+>>> # Camera information
+>>> HOST = '192.168.1.227'
+>>> USERNAME = 'admin'
+>>> PASSWORD = '888888'
+>>> PORT = 80
+>>> 
+>>> # Create a service creator for Http
+>>> some_service_creator = utils.create_service(Http)
+>>> 
+>>> # Create a Http service instance using the service creator
+>>> http = some_service_creator(HOST, username = USERNAME, password = PASSWORD, port = PORT)
+>>> http
+<Http(admin:888888@192.168.1.227:80)>
 ```
