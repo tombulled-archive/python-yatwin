@@ -1,12 +1,14 @@
 from ..interfaces import INTERFACES
 from .. import onekeywifi
 from . import decorators
+from . import utils
 
 """
 Imports:
     ..interfaces.INTERFACES
     ..onekeywifi
     .decorators
+    .utils
 
 Contains:
     <BaseCamera>
@@ -78,7 +80,7 @@ class BaseCamera(object):
                 'If service creation fails, returns None'
             )
 
-            method = decorators.create_service(interface)
+            method = utils.create_service(interface)
             method.__name__ = method_name
             method.__doc__ = method_doc
 
