@@ -46,5 +46,5 @@ def kwarg_or_attr(key, attr=None, not_in=()):
             return func(cls, *args, **kwargs)
 
         return wrapper
-        
+
     return decorator
