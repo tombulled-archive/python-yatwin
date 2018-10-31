@@ -6,8 +6,8 @@ import requests
 import urllib.parse
 import logging
 
-logging.getLogger("urllib3").setLevel(logging.ERROR)
-logging.getLogger("requests").setLevel(logging.ERROR)
+logging.getLogger('urllib3').setLevel(logging.ERROR)
+logging.getLogger('requests').setLevel(logging.ERROR)
 
 """
 Imports:
