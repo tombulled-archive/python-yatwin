@@ -17,26 +17,131 @@
 
 ### Example: constants
 ```python
+>>> from yatwin.interfaces.rtsp import constants
+>>> from pprint import pprint
+>>> 
+>>> # See what constants are available
+>>> pprint([attr for attr in dir(constants) if not attr.startswith('_') and attr.isupper()])
+['DEFAULT_ENDPOINT',
+ 'DEFAULT_PASSWORD',
+ 'DEFAULT_PORT',
+ 'DEFAULT_USERNAME',
+ 'VLC_SNAPSHOT_WAIT']
+>>> 
+>>> # Get a constants value
+>>> constants.DEFAULT_ENDPOINT
+'udp/av1_0'
+>>> 
+>>> # Change a constants value
+>>> constants.DEFAULT_ENDPOINT = 'udp/av2_1'
+>>> constants.DEFAULT_ENDPOINT
+'udp/av2_1'
+>>> 
+>>> # Create a new constant
+>>> constants.FOO_BAR = 'Value'
+>>> constants.FOO_BAR
+'Value'
+>>> 
 ```
 
 ### Example: ffmpeg.download_audio
 ```python
+>>> from yatwin.interfaces.rtsp import ffmpeg
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # Download audio
+>>> ffmpeg.download_audio(URL, file_out = 'audio.mp3', duration = 5)
+'C:\\Users\\Admin\\Documents\\GitHub\\python-yatwin\\audio.mp3'
+>>> 
 ```
 
 ### Example: ffmpeg.download_snapshot
 ```python
+>>> from yatwin.interfaces.rtsp import ffmpeg
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # Download snapshot
+>>> ffmpeg.download_snapshot(URL, file_out = 'snapshot.jpg')
+'C:\\Users\\Admin\\Documents\\GitHub\\python-yatwin\\snapshot.jpg'
+>>> 
 ```
 
 ### Example: ffmpeg.download_video
 ```python
+>>> from yatwin.interfaces.rtsp import ffmpeg
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # Download video
+>>> ffmpeg.download_video(URL, file_out = 'video.mp4', audio = True, duration = 5)
+'C:\\Users\\Admin\\Documents\\GitHub\\python-yatwin\\video.mp4'
+>>> 
 ```
 
 ### Example: rtsp.Rtsp
 ```python
+>>> from yatwin.interfaces import Rtsp
+>>> 
+>>> # Camera (RTSP) information
+>>> HOST = '192.168.1.227'
+>>> USERNAME = 'admin'
+>>> PASSWORD = '888888'
+>>> # PORT = ...
+>>> # ENDPOINT = ...
+>>> 
+>>> # Create an Rtsp instance
+>>> rtsp = Rtsp \
+(
+	HOST,
+	username = USERNAME,
+	password = PASSWORD,
+	# port = ...,
+	# endpoint = ...,
+)
+>>> rtsp
+<Rtsp(admin:888888@192.168.1.227:10554)[udp/av1_0]>
+>>> 
+>>> # Call some methods
+>>> rtsp._make_url()
+'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> rtsp.download_snapshot()
+'C:\\Users\\Admin\\Documents\\GitHub\\python-yatwin\\snapshot.jpg'
+>>> 
 ```
 
 ### Example: utils.embed_image
 ```python
+>>> from yatwin.interfaces.rtsp import utils
+>>> import tkinter as tk
+>>> from pprint import pprint
+>>> 
+>>> # Information
+>>> IMAGE_PATH = 'C:\\Users\\Admin\\Documents\\GitHub\\python-yatwin\\snapshot.jpg'
+>>> 
+>>> # Create a tkinter window and frame
+>>> root = tk.Tk()
+>>> frame = tk.Frame(root)
+>>> frame.grid(row=1, column=1, sticky='nsew')
+>>>
+>>> # Embed the image
+>>> embedded = utils.embed_image(frame, IMAGE_PATH)
+>>> pprint(embedded)
+{'Image': <PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=1280x720 at 0x234A0CB97B8>,
+ 'Label': <tkinter.Label object .!frame.!label2>,
+ 'PhotoImage': <PIL.ImageTk.PhotoImage object at 0x0000023496B50780>}
+>>> 
+>>> # Finally, place root into a mainloop
+>>> try:
+	root.mainloop()
+except KeyboardInterrupt:
+	pass
+
+>>>
 ```
 
 ### Example: vlc.download_audio
