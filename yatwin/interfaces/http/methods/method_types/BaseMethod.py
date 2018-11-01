@@ -82,6 +82,8 @@ class BaseMethod(object):
             resp = http.get(self.endpoint, params=get_parameters, files=files)
         elif self.method == methods.POST:
             resp = http.post(self.endpoint, params=get_parameters, data=post_parameters, files=files)
+        else: # No method defined, assume get
+            resp = http.get(self.endpoint, params=get_parameters, files=files)
 
         self._resp_last = resp
 
