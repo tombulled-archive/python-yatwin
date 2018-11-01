@@ -31,12 +31,13 @@ def kwarg_or_attr(key, attr=None, not_in=()):
             The function wrapper
             """
 
-            if hasattr(cls, attr):
-                cls_attr = getattr(cls, attr)
+            if key not in kwargs:
+                if hasattr(cls, attr):
+                    cls_attr = getattr(cls, attr)
 
-                kwargs.update({key: cls_attr})
-            elif key not in kwargs:
-                raise TypeError(f'Missing kwarg/attr: \'{key}\'')
+                    kwargs.update({key: cls_attr})
+                else:
+                    raise TypeError(f'Missing kwarg/attr: \'{key}\'')
 
             val = kwargs.get(key)
 
@@ -46,5 +47,5 @@ def kwarg_or_attr(key, attr=None, not_in=()):
             return func(cls, *args, **kwargs)
 
         return wrapper
-        
+
     return decorator
