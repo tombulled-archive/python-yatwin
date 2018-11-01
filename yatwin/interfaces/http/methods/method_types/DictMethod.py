@@ -30,7 +30,7 @@ class DictMethod(BaseMethod):
         Shorthand wrapper for self.get
         """
 
-        resp = self.get
+        return self.get(*args, **kwargs)
 
     def get(self, *args, **kwargs):
         """
