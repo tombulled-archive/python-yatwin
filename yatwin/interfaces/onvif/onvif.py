@@ -161,14 +161,20 @@ class Onvif(object):
                 key = operator.attrgetter('name')
             )
 
+            service.operations = {}
+
             for operation in operations:
                 operation_name = operation.name
 
-                setattr(service, operation_name, getattr(service, operation_name))
+                operation_obj = getattr(service, operation_name)
+
+                setattr(service, operation_name, operation_obj)
                 func = getattr(service, operation_name)
 
                 func.__name__ = operation_name
                 func.__doc__ = str(operation)
+
+                service.operations[operation_name] = operation_obj
 
 
     def _build_services(self):
@@ -182,7 +188,7 @@ class Onvif(object):
                 onvif_obj.DeviceMgmt.***() OR
                 onvig_onj.services.get('DeviceMgmt').***()
         """
-        
+
         onvif_xsd = xsd.Xsd(wsdl.XSD_ONVIF)
         common_xsd = xsd.Xsd(wsdl.XSD_COMMON)
 
