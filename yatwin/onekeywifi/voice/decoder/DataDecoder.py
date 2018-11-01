@@ -59,7 +59,6 @@ class DataDecoder(object):
         codes = [available_frequencies.index(frequency) for frequency in frequencies]
         hex_chars = '0123456789abcdef'
         codes = codes[2:-6]
-        print(codes)
         hex_string = ''.join([hex_chars[code - 1] for code in codes])
 
         return hex_string
