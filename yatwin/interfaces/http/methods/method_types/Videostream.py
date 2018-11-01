@@ -39,6 +39,13 @@ class Videostream(BaseMethod):
 
         self.Socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+    def __call__(self, *args, **kwargs):
+        """
+        Disable super().__call__
+        """
+
+        return
+
     @decorators.kwarg_or_attr('http', attr='Http', not_in=(None,))
     def embed_video(self, http=None, **kwargs):
         """
@@ -98,7 +105,10 @@ class Videostream(BaseMethod):
 
         try:
             self.Socket.connect((http.host, http.port))
+        except:
+            self.Socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+        try:
             self.Socket.send(f'GET {self._endpoint} HTTP/1.1\r\n\r\n'.encode())
 
             while True:

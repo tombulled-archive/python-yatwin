@@ -30,6 +30,13 @@ class Snapshot(BaseMethod):
 
         super().__init__(*args, **kwargs)
 
+    def __call__(self, *args, **kwargs):
+        """
+        Disable super().__call__
+        """
+
+        return
+
     def get(self, *args, **kwargs):
         """
         Wrapper for BaseMethod.get
@@ -41,7 +48,7 @@ class Snapshot(BaseMethod):
 
         return resp.parse_bytes()
 
-    def download_snapshot(self, file_out='snapshot.jpg', res=0):
+    def download_snapshot(self, file_out='snapshot.jpg', res=0): # Missing http=
         """
         Downloads the snapshot to file_out
 

@@ -54,6 +54,13 @@ class Speaker:
             frames_per_buffer = self.CHUNK_SZ
         )
 
+    def __call__(self, *args, **kwargs):
+        """
+        Disable super().__call__
+        """
+
+        return
+
     def play(self, numpy_buf):
         """
         Plays numpy_buf using the classes PyAudio stream

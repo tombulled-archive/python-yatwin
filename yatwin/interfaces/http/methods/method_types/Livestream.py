@@ -27,6 +27,13 @@ class Livestream(BaseMethod):
 
         super().__init__(*args, **kwargs)
 
+    def __call__(self, *args, **kwargs):
+        """
+        Disable super().__call__
+        """
+
+        return
+
     @decorators.kwarg_or_attr('http', attr='Http', not_in=(None,))
     def download_video(self, http=None, file=None, audio=True, **kwargs):
         """
@@ -41,9 +48,9 @@ class Livestream(BaseMethod):
         """
 
         if file is None:
-            url = self._make_url(http=http, time=time, filename='', streamid=10, audio=audio)
+            url = self._make_url(http=http, filename='', streamid=10, audio=audio)
         else:
-            url = self._make_url(http=http, time=time, filename=file, streamid=0, audio=audio)
+            url = self._make_url(http=http, filename=file, streamid=0, audio=audio)
 
         kwargs.update(dict(input_kwargs={'f': 'h264'}, output_kwargs={'pix_fmt': 'yuvj420p'}))
 
