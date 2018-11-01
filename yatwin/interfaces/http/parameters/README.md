@@ -2,6 +2,7 @@
 
 ## Contents:
 * [parameters](#example-parameters)
+* [utils.get_parameter](#example-utilsget_parameter)
 
 ### Example: parameters
 ```python
@@ -37,5 +38,20 @@
 >>> from yatwin.interfaces.http.parameters.system_parameters import ADC_MAX
 >>> ADC_MAX
 <SystemParam(adc_max)>
+>>> 
+```
+
+### Example: utils.get_parameter
+```python
+>>> from yatwin.interfaces.http.parameters import utils
+>>> 
+>>> # Get a parameter
+>>> adc_min = utils.get_parameter(identifier = 'adc_min')
+>>> adc_min
+<SystemParam(adc_min)>
+>>> 
+>>> # Get a parameter that doesn't exist
+>>> foo_bar = utils.get_parameter(identifier = 'foo_bar')
+>>> foo_bar
 >>> 
 ```
