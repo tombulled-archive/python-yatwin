@@ -146,28 +146,138 @@ except KeyboardInterrupt:
 
 ### Example: vlc.download_audio
 ```python
+>>> from yatwin.interfaces.rtsp import vlc
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # Download audio
+>>> vlc.download_audio(URL)
+'C:\\Users\\Admin\\Documents\\GitHub\\python-yatwin\\audio.flac'
+>>> 
 ```
 
 ### Example: vlc.download_snapshot
 ```python
+>>> from yatwin.interfaces.rtsp import vlc
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # Download snapshot
+>>> vlc.download_snapshot(URL)
+'C:\\Users\\Admin\\Documents\\GitHub\\python-yatwin\\snapshot.png'
+>>> 
 ```
 
 ### Example: vlc.download_video
 ```python
+>>> from yatwin.interfaces.rtsp import vlc
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # Download video
+>>> vlc.download_video(URL)
+'C:\\Users\\Admin\\Documents\\GitHub\\python-yatwin\\video.mp4'
+>>> 
 ```
 
 ### Example: vlc.play_audio
 ```python
+>>> from yatwin.interfaces.rtsp import vlc
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # Play audio
+>>> player = vlc.play_audio(URL, duration = None)
+>>> 
+>>> # Listen for a bit...
+>>> 
+>>> # Stop playing audio
+>>> player.stop()
+>>> 
 ```
 
 ### Example: vlc.view_snapshot
 ```python
+>>> from yatwin.interfaces.rtsp import vlc
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # View snapshot
+>>> player = vlc.view_snapshot(URL)
+>>> player
+<vlc.MediaPlayer object at 0x00000234A0CB9E10>
+>>> 
+>>> # View snapshot for a bit...
+>>> 
+>>> # Destroy window
+>>> player.stop()
+>>> 
 ```
 
 ### Example: vlc.view_video
 ```python
+>>> from yatwin.interfaces.rtsp import vlc
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # View video
+>>> player = vlc.view_video(URL, duration = None)
+>>> player
+<vlc.MediaPlayer object at 0x000002349ECF6240>
+>>> 
+>>> # View video for a bit...
+>>> 
+>>> # Destroy window
+>>> player.stop()
+>>> 
 ```
 
 ### Example: vlc.embed_video
 ```python
+>>> from yatwin.interfaces.rtsp import vlc
+>>> import tkinter as tk
+>>> 
+>>> # RTSP information
+>>> URL = 'rtsp://admin:888888@192.168.1.227:10554/udp/av1_0'
+>>> 
+>>> # Create a window
+>>> root = tk.Tk()
+>>> 
+>>> # Create a frame
+>>> frame = tk.Frame(root)
+>>> frame.grid(row=1, column=1, sticky='nsew')
+>>> 
+>>> # Make frame expand to root
+>>> root.grid_columnconfigure(1, weight=1)
+>>> root.grid_rowconfigure(1, weight=1)
+>>> 
+>>> # Setup root
+>>> root.grid_propagate(False)
+>>> root.geometry('1080x720')
+''
+>>> 
+>>> # Embed the video
+>>> player = vlc.embed_video(URL, frame)
+>>> player
+<vlc.MediaPlayer object at 0x00000234A0CB9EB8>
+>>> 
+>>> # Play the video
+>>> player.play()
+0
+>>> 
+>>> # Finally, place root into a mainloop
+>>> try:
+	root.mainloop()
+except KeyboardInterrupt:
+	player.stop()
+	root.destroy()
+
+	
+>>> 
 ```
