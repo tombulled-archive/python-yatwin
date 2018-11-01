@@ -486,7 +486,7 @@ class WsdlCompiler(object):
 
                 for output_element in output_param['Elements'].get('Elements', ()):
                     output_element_name = output_element['Name']
-                    output_element_type = output_element['Type'].split(':')[-1]
+                    output_element_type = output_element['Type'].split(':')[-1] if output_element['Type'] is not None else None
                     output_element_description = output_element['Documentation'].strip() if output_element['Documentation'] is not None else ''
                     output_element_optional = output_element['Optional'] is True
                     output_element_unbounded = output_element['Unbounded'] is True
