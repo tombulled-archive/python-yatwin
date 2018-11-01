@@ -1,5 +1,5 @@
 import tkinter as tk
-import PIL
+from PIL import Image, ImageTk
 
 """
 Imports:
@@ -9,6 +9,10 @@ Imports:
 Contains:
     embed_image
 """
+
+class PIL: # Wrapper for inability to just import PIL
+    Image = Image
+    ImageTk = ImageTk
 
 def embed_image(tk_frame, image_path):
     """
