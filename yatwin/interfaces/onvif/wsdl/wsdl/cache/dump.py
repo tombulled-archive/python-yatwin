@@ -24,8 +24,13 @@ def dump_all():
         .compiled.pickle - The compiled wsdl
     """
 
+    dumped_parsed = {}
+    dumped_compiled = {}
+
     for WSDL in WSDLS:
         wsdl = Wsdl(WSDL)
+
+        wsdl_name = wsdl.WsdlSource._file_name
 
         parsed = wsdl.WsdlCompiler.parsed
         compiled = wsdl.compiled
@@ -33,8 +38,22 @@ def dump_all():
         directory = os.path.dirname(WSDL)
         filename = os.path.basename(WSDL)
 
-        with open(directory + '\\cache\\' + filename + '.parsed.pickle', 'wb') as file_parsed:
+        path_parsed = directory + '\\cache\\' + filename + '.parsed.pickle'
+        path_compiled = directory + '\\cache\\' + filename + '.compiled.pickle'
+
+        with open(path_parsed, 'wb') as file_parsed:
             pickle.dump(parsed, file_parsed, pickle.HIGHEST_PROTOCOL)
 
-        with open(directory + '\\cache\\' + filename + '.compiled.pickle', 'wb') as file_compiled:
+        with open(path_compiled, 'wb') as file_compiled:
             pickle.dump(compiled, file_compiled, pickle.HIGHEST_PROTOCOL)
+
+        dumped_parsed[wsdl_name] = path_parsed
+        dumped_compiled[wsdl_name] = path_compiled
+
+    data = \
+    {
+        'parsed': dumped_parsed,
+        'compiled': dumped_compiled,
+    }
+
+    return data
