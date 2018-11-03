@@ -61,6 +61,9 @@ def command_inject(http, command, blind=True, clear=True):
         Newly implemented, (extremely) long commands can be executed
         ... just slowly
     Note: The command will be stripped
+    Note: Command injection can be performed through the following fields:
+        FTP Server, FTP Username, FTP Password
+        ... This will be supported in an upcoming update
     """
 
     command = command.strip()
