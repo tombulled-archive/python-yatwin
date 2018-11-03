@@ -6,8 +6,8 @@ These are variable constants, in that they can be changed by the user
 ... program execution
 """
 
-DEFAULT_USERNAME = 'vstarcam2017'
-DEFAULT_PASSWORD = '20170912'
+DEFAULT_USERNAME = '' # 'vstarcam2017'
+DEFAULT_PASSWORD = '' # '20170912'
 DEFAULT_PORT = 23
 
 KNOWN_LOGINS = \
@@ -23,6 +23,10 @@ KNOWN_LOGINS = \
     (
         'root',
         '123456',
+    ),
+    (
+        '',
+        '',
     ),
 )
 
