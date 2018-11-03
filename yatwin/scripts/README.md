@@ -15,6 +15,7 @@
 * [get_rtsp_port](#example-get_rtsp_port)
 * ~~[protect_http_auth](#example-protect_http_auth)~~
 * [start_ftp_server](#example-start_ftp_server)
+* [start_telnet_server](#example-start_telnet_server)
 * [xss_inject](#example-xss_inject)
 
 ### Example: bypass_firewall_telnet
@@ -366,6 +367,63 @@ drwxrwxrwt    2 vstarcam root           500 Sep 14 00:57 tmp
 drwxrwxr-x    6 1003     1003            62 Mar 13  2017 usr
 drwxrwxr-x    4 1003     1003            37 Mar 13  2017 var
 >>>
+```
+
+### Example: start_telnet_server
+```python
+>>> from yatwin import scripts
+>>> from yatwin import interfaces
+>>> from yatwin import utils
+>>> 
+>>> # Camera (HTTP) information
+>>> HOST = '192.168.1.227'
+>>> HTTP_USERNAME = 'admin'
+>>> HTTP_PASSWORD = '888888'
+>>> HTTP_PORT = 80
+>>> 
+>>> # Create a Http instance
+>>> http = interfaces.Http \
+(
+	HOST,
+	username = HTTP_USERNAME,
+	password = HTTP_PASSWORD,
+	port = HTTP_PORT,
+)
+>>> http
+<Http(admin:888888@192.168.1.227:80)>
+>>> 
+>>> # Check to see if telnet is already running on port 23
+>>> utils.scan_port(HOST, 23)
+False
+>>> 
+>>> # Start a telnet server
+>>> scripts.start_telnet_server(http = http, port = 23, auth = False, kill_all = True)
+True
+>>> 
+>>> # Check to see if telnet is now running on port 23
+>>> utils.scan_port(HOST, 23)
+True
+>>> 
+>>> # Camera (Telnet) information
+>>> TELNET_USERNAME = '' # auth == False when starting server
+>>> TELNET_PASSWORD = '' # auth == False when starting server
+>>> TELNET_PORT = 23
+>>> 
+>>> # Create a Telnet instance
+>>> telnet = interfaces.Telnet \
+(
+	HOST,
+	username = TELNET_USERNAME,
+	password = TELNET_PASSWORD,
+	port = TELNET_PORT,
+)
+>>> telnet
+<Telnet(:@192.168.1.227:23)>
+>>> 
+>>> # Prove it works
+>>> print(telnet.ls())
+sda0  sda1  sda2  sda3
+>>> 
 ```
 
 ### Example: xss_inject
