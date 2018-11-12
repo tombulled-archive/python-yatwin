@@ -1,4 +1,4 @@
-# python-yatwin - `***unfinished***`
+# python-yatwin
 
 ## Python 3 API for Vstarcam and YATWIN IP Cameras (Windows)
 
