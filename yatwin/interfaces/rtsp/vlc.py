@@ -1,15 +1,24 @@
 from . import constants
-import vlc
+from . import decorators
 import time
 import os
+
+try:
+    import vlc
+except:
+    vlc = None
 
 """
 Library containing functions to interface with 'vlc'
 All functions have 'url' as their first parameter
 
+Note: These methods will fail if VLC is not available
+... (not installed)
+
 Imports:
     .constants
-    vlc
+    .decorators
+    vlc (attempted)
     time
     os
 
@@ -21,8 +30,14 @@ Contains:
     view_snapshot
     view_video
     embed_video
+
+Constants defained here:
+    VLC
 """
 
+VLC = 'vlc'
+
+@decorators.library_required(VLC, vlc)
 def download_audio \
         (
             url,
@@ -83,6 +98,7 @@ def download_audio \
 
     return path
 
+@decorators.library_required(VLC, vlc)
 def download_snapshot(url, file_out='snapshot.png'):
     """
     Function to download a snapshot from 'url'
@@ -111,6 +127,7 @@ def download_snapshot(url, file_out='snapshot.png'):
 
     return path
 
+@decorators.library_required(VLC, vlc)
 def download_video \
         (
             url,
@@ -187,6 +204,7 @@ def download_video \
     else:
         return player
 
+@decorators.library_required(VLC, vlc)
 def play_audio(url, duration = 5):
     """
     Plays audio from 'url' for 'duration' seconds
@@ -211,6 +229,7 @@ def play_audio(url, duration = 5):
     else:
         return player
 
+@decorators.library_required(VLC, vlc)
 def view_snapshot(url):
     """
     Opens up a window displaying a snapshot from 'url'
@@ -231,6 +250,7 @@ def view_snapshot(url):
 
     return player
 
+@decorators.library_required(VLC, vlc)
 def view_video(url, audio = True, duration = 10):
     """
     Opens up a window displaying the video
@@ -256,6 +276,7 @@ def view_video(url, audio = True, duration = 10):
     else:
         return player
 
+@decorators.library_required(VLC, vlc)
 def embed_video(url, tk_frame):
     """
     Embeds the video stream from 'url' into

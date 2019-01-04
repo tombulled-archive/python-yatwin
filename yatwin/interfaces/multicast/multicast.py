@@ -1,5 +1,6 @@
 from . import nmap
 from . import ws_discovery
+from . import decorators
 import xml.etree
 
 """
@@ -8,8 +9,11 @@ Library containing <Multicast>
 Imports:
     .nmap
     .ws_discovery
+    .decorators
     xml.etree
 """
+
+PORT_SCANNER = 'PortScanner'
 
 class Multicast(object):
     """
@@ -41,7 +45,7 @@ class Multicast(object):
     def ws_discover(self):
         """
         Broadcasts *wsdd discover* packets using ws_discovery
-        
+
         Returns a list of services
         ... Where each service is a dictionary of values
         """
@@ -81,6 +85,7 @@ class Multicast(object):
 
         return services
 
+    @decorators.assert_attr(PORT_SCANNER)
     def broadcast_wsdd_discover_nmap(self, arguments='-Pn'):
         """
         Broadcasts a *wsdd discover* packet, then returns a parsed response.
@@ -101,6 +106,7 @@ class Multicast(object):
 
         return parsed
 
+    @decorators.assert_attr(PORT_SCANNER)
     def _get_nmap_broadcast_wsdd_discover_script_output(self):
         """
         Finds the <prescript> tag in the nmap xml output
@@ -198,4 +204,7 @@ class Multicast(object):
         It creates them, then fills them with a default/null value (usualy None)
         """
 
-        self.PortScanner = nmap.PortScanner()
+        try:
+            self.PortScanner = nmap.PortScanner()
+        except:
+            self.PortScanner = None
