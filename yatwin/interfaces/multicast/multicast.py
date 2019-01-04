@@ -4,16 +4,23 @@ from . import decorators
 import xml.etree
 
 """
-Library containing <Multicast>
-
 Imports:
     .nmap
     .ws_discovery
     .decorators
     xml.etree
+
+Contains:
+    <Multicast>
 """
 
 PORT_SCANNER = 'PortScanner'
+HELP_NMAP = \
+(
+    'Nmap command failed to execute. '
+    'Is Nmap installed? (Make sure it\'s '
+    'in your PATH)'
+)
 
 class Multicast(object):
     """
@@ -85,7 +92,7 @@ class Multicast(object):
 
         return services
 
-    @decorators.assert_attr(PORT_SCANNER)
+    @decorators.assert_attr(PORT_SCANNER, help_message=HELP_NMAP)
     def broadcast_wsdd_discover_nmap(self, arguments='-Pn'):
         """
         Broadcasts a *wsdd discover* packet, then returns a parsed response.
@@ -106,7 +113,7 @@ class Multicast(object):
 
         return parsed
 
-    @decorators.assert_attr(PORT_SCANNER)
+    @decorators.assert_attr(PORT_SCANNER, help_message=HELP_NMAP)
     def _get_nmap_broadcast_wsdd_discover_script_output(self):
         """
         Finds the <prescript> tag in the nmap xml output

@@ -16,9 +16,10 @@ def assert_attr \
         (
             attr_name,
             not_val = None,
-            fatal = False,
+            fatal = True,
             log = True,
             ret_val = None,
+            help_message = None,
         ):
     """
     Decorator to raise/warn/fail if
@@ -43,6 +44,9 @@ def assert_attr \
                 'Attribute assertion failed: '
                 f'{attr_name} != {not_val}'
             )
+
+            if help_message is not None:
+                error_message += f' ({help_message})'
 
             if attr_failed:
                 if fatal:

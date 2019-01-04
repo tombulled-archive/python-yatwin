@@ -10,9 +10,36 @@ Imports:
 
 Contains:
     library_required()
+    try_except_raise()
 """
 
 logger = logging.getLogger(__name__)
+
+def try_except_raise(error_message):
+    """
+    Decorator to try and call the function,
+    ... however raises Exception(error_message)
+    ... on an error
+    """
+
+    def decorator(func):
+        """
+        Level: try_except_raise.decorator
+        """
+
+        def wrapper(*args, **kwargs):
+            """
+            Level: try_except_raise.decorator.wrapper
+            """
+
+            try:
+                return func(*args, **kwargs)
+            except:
+                raise Exception(error_message)
+
+        return wrapper
+
+    return decorator
 
 def library_required \
         (

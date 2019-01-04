@@ -1,3 +1,4 @@
+from . import decorators
 import ffmpeg
 import os
 
@@ -6,6 +7,7 @@ Library containing functions to interface with 'ffmpeg'
 All functions have 'url' as their first parameter
 
 Imports:
+    .decorators
     ffmpeg
     os
 
@@ -17,6 +19,14 @@ Contains:
 These download methods are superior to vlc's
 """
 
+ERROR_FFMPEG_NOT_INSTALLED = \
+(
+    'FFmpeg command failed to execute. '
+    'Is FFmpeg installed? (Make sure it\'s '
+    'in your PATH)'
+)
+
+@decorators.try_except_raise(ERROR_FFMPEG_NOT_INSTALLED)
 def download_audio(url, file_out = 'audio.mp3', duration=5):
     """
     Function to download audio from 'url'
@@ -38,6 +48,7 @@ def download_audio(url, file_out = 'audio.mp3', duration=5):
 
     return path
 
+@decorators.try_except_raise(ERROR_FFMPEG_NOT_INSTALLED)
 def download_snapshot(url, file_out='snapshot.jpg'):
     """
     Function to download a snapshot from 'url'
@@ -59,6 +70,7 @@ def download_snapshot(url, file_out='snapshot.jpg'):
 
     return path
 
+@decorators.try_except_raise(ERROR_FFMPEG_NOT_INSTALLED)
 def download_video(url, file_out = 'video.mp4', audio = True, duration = 5, input_kwargs={}, output_kwargs={}):
     """
     Function to download video from 'url'
