@@ -24,5 +24,9 @@ from .cameras import BaseCamera
 from .cameras import BaseHackedYatwin
 
 def _enable_logging():
+    """
+    Enable logging
+    """
+
     logging.disable(logging.NOTSET)
     logger.info('Logging has been enabled')
