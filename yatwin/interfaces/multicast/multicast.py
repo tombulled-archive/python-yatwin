@@ -102,7 +102,11 @@ class Multicast(object):
             Changing these two much can affect the response
         """
 
-        scan = self.PortScanner.scan(hosts='', arguments=arguments + ' --script=broadcast-wsdd-discover')
+        scan = self.PortScanner.scan \
+        (
+            hosts = '',
+            arguments = arguments + ' --script=broadcast-wsdd-discover',
+        )
 
         script_output = self._get_nmap_broadcast_wsdd_discover_script_output()
 
