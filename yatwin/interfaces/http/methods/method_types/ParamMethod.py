@@ -1,10 +1,12 @@
 from .BaseMethod import BaseMethod
 from ...parameters import utils as parameter_utils
+from . import decorators
 
 """
 Imports:
     .BaseMethod.BaseMethod
     ...parameters.utils as parameter_utils
+    .decorators
 
 Contains:
     <ParamMethod>
@@ -32,6 +34,7 @@ class ParamMethod(BaseMethod):
 
         return self.get(*args, **kwargs)
 
+    @decorators.kwarg_or_attr('http', attr='Http', not_in=(None,))
     def get \
             (
                 self,
