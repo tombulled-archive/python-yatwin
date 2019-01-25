@@ -2,11 +2,43 @@ from . import constants
 from . import decorators
 import time
 import os
+import logging
+
+logger = logging.getLogger(__name__)
+
+ENVIRON_VLC_PATH = 'VLC_PATH'
+ENVIRON_PROGRAM_FILES = 'ProgramFiles'
+
+if ENVIRON_VLC_PATH in os.environ: # set the VLC_PATH environ variable before any yatwin imports
+    VLC_PATH = os.environ[ENVIRON_VLC_PATH]
+
+    program_files = os.environ[ENVIRON_PROGRAM_FILES]
+    os.environ[ENVIRON_PROGRAM_FILES] = VLC_PATH
 
 try:
     import vlc
-except:
+except OSError as error_os: # OSError: [WinError 193] %1 is not a valid Win32 application
+    vlc_error_message = \
+    (
+        'DLL is not a valid Win32 application. '
+        'Make sure VLC and Python are BOTH either 32-bit or 64-bit.'
+    )
+
+    logger.error(vlc_error_message)
+
     vlc = None
+except Exception as error:
+    vlc_error_message = \
+    (
+        'VLC failed to import. Is VLC installed?'
+    )
+
+    logger.error(vlc_error_message)
+
+    vlc = None
+
+if ENVIRON_VLC_PATH in os.environ:
+    os.environ[ENVIRON_PROGRAM_FILES] = program_files
 
 """
 Library containing functions to interface with 'vlc'
@@ -21,6 +53,7 @@ Imports:
     vlc (attempted)
     time
     os
+    logging
 
 Contains:
     download_audio

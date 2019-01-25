@@ -24,7 +24,7 @@ class Ftp(object):
     """
     Indirect wrapper for ftplib.FTP (https://docs.python.org/3/library/ftplib.html#ftplib.FTP)
     """
-    
+
     def __init__ \
             (
                 self,
@@ -177,15 +177,16 @@ class Ftp(object):
         ... the decorator @decorators.keep_alive
         Requests the contents of 'file_in' from the server
         ... then writes it into 'file_out'
-        'file_out' will be written to inside of self.local_directory
+        'file_out' should have an absolute path. The local
+        path can be found in: self.local_directory
         If 'file_out' is None, it takes on the file name
         ... of 'file_in'
         """
 
         if file_out is None:
-            file_out = os.path.basename(file_in)
+            file_out = self.local_directory + os.path.basename(file_in)
 
-        with open(self.local_directory + file_out, 'wb') as file:
+        with open(file_out, 'wb') as file:
             self.FTP.retrbinary(constants.COMMAND_RETR + ' ' + file_in, callback = file.write)
 
     @decorators.keep_alive
@@ -204,8 +205,8 @@ class Ftp(object):
         ... the decorator @decorators.keep_alive
         Sends the contents of 'file_in' to the server
         ... to be written to 'file_out'
-        'file_in' will be read from inside of self.local_directory
-        If 'file_out' is None, it takes on the file name
+        'file_in' should be an absolute path. The local
+        ... directory can be found in self.local_directory
         ... of 'file_in'
         If 'file_in' does not exist, it is created as an empty file
         ... similair to Linux's 'touch'
@@ -214,11 +215,11 @@ class Ftp(object):
         if file_out is None:
             file_out = os.path.basename(file_in)
 
-        if not os.path.isfile(self.local_directory + file_in):
-            with open(self.local_directory + file_in, 'w') as file:
+        if not os.path.isfile(file_in):
+            with open(file_in, 'w') as file:
                 pass
 
-        with open(self.local_directory + file_in, 'rb') as file:
+        with open(file_in, 'rb') as file:
             self.FTP.storbinary(constants.COMMAND_STOR + ' ' + file_out, file)
 
     def _init_attrs(self):

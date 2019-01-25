@@ -56,7 +56,7 @@ def assert_attr \
 
                 return ret_val
             else:
-                return func(*args, **kwargs)
+                return func(cls, *args, **kwargs)
 
         return wrapper
 

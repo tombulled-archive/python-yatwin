@@ -60,6 +60,7 @@ class Multicast(object):
         wsd = ws_discovery.WSDiscovery()
         wsd.start()
 
+        """
         ttype = ws_discovery.QName("abc", "def")
 
         ttype1 = ws_discovery.QName("namespace", "myTestService")
@@ -69,7 +70,8 @@ class Multicast(object):
 
         xAddrs = ["localhost:8080/abc", '{ip}/device_service']
         wsd.publishService(types=[ttype], scopes=[scope2], xAddrs=xAddrs)
-
+        """
+        
         ret = wsd.searchServices()
 
         wsd.stop()

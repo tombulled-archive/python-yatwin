@@ -34,11 +34,12 @@ def kwarg_or_attr(key, attr=None, not_in=()):
             if hasattr(cls, attr):
                 cls_attr = getattr(cls, attr)
 
-                kwargs.update({key: cls_attr})
+                if cls_attr not in not_in:
+                    kwargs.update({key: cls_attr})
             elif key not in kwargs:
                 raise TypeError(f'Missing kwarg/attr: \'{key}\'')
 
-            val = kwargs.get(key)
+            val = kwargs.get(key, None)
 
             if val in not_in:
                 raise TypeError(f'Illegal value for \'{key}\'')
