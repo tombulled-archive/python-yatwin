@@ -59,6 +59,12 @@ def _parse_ping(resp):
     if 'Request timed out.' in resp:
         return None
 
+    if 'transmit failed' in resp:
+        return None
+
+    if 'General failure' in resp:
+        return None
+
     (
         line_pinging,
         line_reply,

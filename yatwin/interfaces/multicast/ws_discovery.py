@@ -1207,7 +1207,8 @@ class WSDiscovery:
             self._sendProbeMatch(services, env.getMessageId(), addr)
 
         elif env.getAction() == ACTION_RESOLVE:
-            if self._localServices.has_key(env.getEPR()):
+            #if self._localServices.has_key(env.getEPR()):
+            if env.getEPR() in self._localServices:
                 service = self._localServices[env.getEPR()]
                 self._sendResolveMatch(service, env.getMessageId(), addr)
 

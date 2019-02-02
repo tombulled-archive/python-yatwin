@@ -11,6 +11,7 @@ Imports:
     .add_to_path.add_to_path
     .set_ffmpeg_path.set_ffmpeg_path
     .set_vlc_path.set_vlc_path
+    .set_nmap_path.set_nmap_path
 """
 
 from .disect_url import disect_url
@@ -22,3 +23,4 @@ from .set_path import set_path
 from .add_to_path import add_to_path
 from .set_ffmpeg_path import set_ffmpeg_path
 from .set_vlc_path import set_vlc_path
+from .set_nmap_path import set_nmap_path
