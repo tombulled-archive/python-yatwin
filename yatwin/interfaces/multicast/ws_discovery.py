@@ -958,7 +958,7 @@ class NetworkingThread(_StopableDaemonThread):
                 key = addr[0] + ":" + str(addr[1]) + ":" + str(iid)
                 if mid is not None and len(mid) > 0:
                     key = key + ":" + mid
-                if not self._iidMap.has_key(key):
+                if key not in self._iidMap:
                     self._iidMap[key] = iid
                 else:
                     tmnum = self._iidMap[key]
@@ -1188,7 +1188,7 @@ class WSDiscovery:
         self._remoteServices[service.getEPR()] = service
 
     def _removeRemoteService(self, epr):
-        if self._remoteServices.has_key(epr):
+        if epr in self._remoteServices:
             del self._remoteServices[epr]
 
     def handleEnv(self, env, addr):
@@ -1207,7 +1207,7 @@ class WSDiscovery:
             self._sendProbeMatch(services, env.getMessageId(), addr)
 
         elif env.getAction() == ACTION_RESOLVE:
-            #if self._localServices.has_key(env.getEPR()):
+            #if env.getEPR() in self._localServices:
             if env.getEPR() in self._localServices:
                 service = self._localServices[env.getEPR()]
                 self._sendResolveMatch(service, env.getMessageId(), addr)
