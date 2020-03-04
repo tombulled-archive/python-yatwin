@@ -15,6 +15,17 @@ Vstarcam C24S-Plus FullHD 1080P Wide Angle Camera | https://www.vstarcam.com.sg/
 
 -----------------------------------
 
+### Installation
+```
+python -m pip install ffmpeg-python
+python -m pip install opencv-python
+Download and install wheel from: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio (pip install path_to_wheel)
+python -m pip install onvif_zeep
+python -m pip install comtypes
+```
+
+-----------------------------------
+
 ### Getting started:
 
 ```python
