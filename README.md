@@ -2,7 +2,9 @@
 
 ## Python 3 API for Vstarcam and YATWIN IP Cameras (Windows)
 
-![C24H Black 720P WiFi IP Camera](http://pro646f20.pic37.websiteonline.cn/upload/xch2.jpg)
+<p align="center">
+	<img src="https://www.tivaict.com/images/c24s.png" alt="Vstarcam C24H Black 720P WiFi IP Camera" width="500px">
+</p>
 
 -----------------------------------
 
