@@ -13,13 +13,10 @@ Python 3 API for Vstarcam and YATWIN IP Cameras (Windows)
 | Vstarcam C24S-Plus FullHD 1080P Wide Angle Camera | https://www.vstarcam.com.sg/Smart-IP-Cameras/Indoor/Vstarcam-C24S-Plus-FullHD-1080P-Wide-Angle-Camera |
 
 ## Installation
-```sh
-Download and install wheel from: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio (pip install path_to_wheel)
+```
+First, download and install wheel from: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio (pip install path_to_wheel)
 
-pip install ffmpeg-python
-pip install opencv-python
-pip install onvif_zeep
-pip install comtypes
+pip install .
 ```
 
 ## Getting Started
