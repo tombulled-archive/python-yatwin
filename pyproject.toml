@@ -7,6 +7,10 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
+ffmpeg-python = "^0.2.0"
+opencv-python = "^4.6.0"
+onvif-zeep = "^0.2.12"
+comtypes = "^1.1.11"
 
 [tool.poetry.dev-dependencies]
 
